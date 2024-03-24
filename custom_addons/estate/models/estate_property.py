@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
@@ -59,3 +60,23 @@ class Property(models.Model):
         else:
             self.garden_area = self.garden_area or 10
             self.garden_orientation = self.garden_orientation or 'north'
+
+    def action_set_sold_state(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError(_("Canceled property cannot be sold and a sold"))
+            elif record.state == 'sold':
+                raise UserError(_("The property is already sold"))
+            else:
+                record.state = 'sold'
+        return True
+
+    def action_set_canceled_state(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(_("Sold property cannot be canceled"))
+            elif record.state == 'canceled':
+                raise UserError(_("The property is already canceled"))
+            else:
+                record.state = 'canceled'
+        return True
