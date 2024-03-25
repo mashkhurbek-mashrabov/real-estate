@@ -9,10 +9,14 @@ class PropertyOffer(models.Model):
     price = fields.Float("Price", required=True)
     validity = fields.Integer("Offer Validity (days)", required=True, default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
-    status = fields.Selection(string="Status", no_copy=True,
+    status = fields.Selection(string="Status", copy=False,
                               selection=[("accepted", 'Accepted'), ("refused", 'Refused')])
     partner_id = fields.Many2one(comodel_name="res.partner", string="Partner", required=True)
     property_id = fields.Many2one(comodel_name="estate.property", string="Property", required=True, ondelete='cascade')
+
+    _sql_constraints = [
+        ("check_positive_offer_price", "CHECK(price > 0)", "The price must be strictly positive"),
+    ]
 
     @api.depends('validity', 'create_date')
     def _compute_deadline_date(self):
@@ -34,10 +38,10 @@ class PropertyOffer(models.Model):
             elif record.status == 'accepted':
                 raise UserError(_("The property offer has already been accepted"))
             else:
-                record.status = 'accepted'
                 record.property_id.buyer_id = record.partner_id
-                record.property_id.selling_price = record.price
+                record.status = 'accepted'
                 record.property_id.state = 'offer_accepted'
+                record.property_id.selling_price = record.price
         return True
 
     def action_set_refused_status(self):

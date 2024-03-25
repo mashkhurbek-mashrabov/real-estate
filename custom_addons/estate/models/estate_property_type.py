@@ -9,3 +9,4 @@ class EstatePropertyType(models.Model):
     name = fields.Char(string="Title", required=True)
     sequence = fields.Integer('Sequence', default=1, help="Used for manual ordering!")
 
+    _sql_constraints = [('unique_property_type_name', 'unique(name)', 'The type name must be unique!')]
