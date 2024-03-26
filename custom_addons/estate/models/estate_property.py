@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare
 class Property(models.Model):
     _name = 'estate.property'
     _description = 'Property'
+    _order = "id desc"
 
     salesperson_id = fields.Many2one(comodel_name='res.users', string='Salesman', default=lambda self: self.env.user)
     buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
