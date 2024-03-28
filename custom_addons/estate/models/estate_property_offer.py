@@ -21,6 +21,15 @@ class PropertyOffer(models.Model):
         ("check_positive_offer_price", "CHECK(price > 0)", "The price must be strictly positive"),
     ]
 
+    @api.model
+    def create(self, vals):
+        best_offer = self.env['estate.property'].browse(vals['property_id']).best_offer
+        if vals['price'] < best_offer:
+            raise UserError(
+                f"Can't create an offer with a price less than the best offer! \n The best offer is: {best_offer}")
+        self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+        return super(PropertyOffer, self).create(vals)
+
     @api.depends('validity', 'create_date')
     def _compute_deadline_date(self):
         for record in self:
