@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--    Menu action    -->
     <record id="estate_property_action" model="ir.actions.act_window">
@@ -9,8 +9,8 @@
     </record>
 
     <!--    Kanban view    -->
-    <record id="estate_property_kanban_view" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="False">
@@ -47,8 +47,8 @@
     </record>
 
     <!--    List    -->
-    <record id="estate_property_tree_view" model="ir.ui.view">
-        <field name="name">estate_property.tree</field>
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate_property.view.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree decoration-success="state == 'offer_received' or state == 'offer_accepted'"
@@ -69,8 +69,8 @@
     </record>
 
     <!--    Form    -->
-    <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
@@ -137,8 +137,8 @@
     </record>
 
     <!--    Search    -->
-    <record id="estate_property_search_view" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Property">
